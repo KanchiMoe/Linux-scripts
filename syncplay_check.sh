@@ -38,7 +38,7 @@ function linux_check_syncplay_opened {
 
 function windows_check_syncplay {
     if [ -e "$windows_path" ]; then
-        echo -e "\e[32m[✓]\e[0m Syncplay.ini exists."
+        echo -e "$MSG_S Syncplay.ini exists."
         windows_check_server_host
     else
         echo -e "\e[31m[✗]\e[0m Syncplay.ini does not exist."
@@ -47,7 +47,7 @@ function windows_check_syncplay {
 
 function windows_check_server_host {
     if grep -qE "host\s*=\s*syncplay.pl" "$windows_path"; then
-        echo -e "\e[32m[✓]\e[0m Host is set to syncplay.pl"
+        echo -e "$MSG_S Host is set to syncplay.pl"
         windows_check_server_port
     else
         echo -e "\e[31m[✗]\e[0m Host is not set to syncplay.pl. Correcting..."
@@ -58,7 +58,7 @@ function windows_check_server_host {
 
 function windows_check_server_port {
     if grep -qE "port\s*=\s*8998" "$windows_path"; then
-        echo -e "\e[32m[✓]\e[0m Port is set to 8998"
+        echo -e "$MSG_S Port is set to 8998"
         windows_check_server_password
     else
         echo -e "\e[31m[✗]\e[0m Port is not 8998. Correcting..."
@@ -69,7 +69,7 @@ function windows_check_server_port {
 
 function windows_check_server_password {
     if grep -qE "password\s*=\s*None" "$windows_path"; then
-        echo -e "\e[32m[✓]\e[0m No password is set"
+        echo -e "$MSG_S No password is set"
     else
         echo -e "\e[31m[✗]\e[0m A password is detected, unsetting..."
         sed -i 's/\(password\s*=\s*\S\+\)/password = None/' "$windows_path"
