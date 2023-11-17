@@ -1,15 +1,28 @@
 #!/bin/bash
 
+MSG_S="\e[32m[✓]\e[0m"
+MSG_F="\e[31m[✗]\e[0m"
+MSG_I="\e[38;5;39m[-]\e[0m"
 windows_path="$APPDATA\\syncplay.ini"
+
 
 function check_os {
     if [ "$(uname)" == "Linux" ]; then
-        echo -e "\e[38;5;39m[-]\e[0m Operating System: Linux"
+        echo -e "$MSG_I Operating System: Linux"
+        linux_check_syncplay
     elif [ "$(expr substr $(uname -s) 1 5)" == "MINGW" ]; then
-        echo -e "\e[38;5;39m[-]\e[0m Operating System: Windows"
+        echo -e "$MSG_I Operating System: Windows"
         windows_check_syncplay
     else
         echo "\e[31m[✗]\e[0m Unsupported operating system."
+    fi
+}
+
+function linux_check_syncplay {
+    if pacman -Qs syncplay >/dev/null 2>&1; then
+        echo -e "$MSG_S is installed"
+    else
+        echo "is not installed"
     fi
 }
 
