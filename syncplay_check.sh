@@ -4,12 +4,12 @@ MSG_S="\e[32m[✓]\e[0m"
 MSG_F="\e[31m[✗]\e[0m"
 MSG_I="\e[38;5;39m[-]\e[0m"
 windows_path="$APPDATA\\syncplay.ini"
-
+linux_path=".config"
 
 function check_os {
     if [ "$(uname)" == "Linux" ]; then
         echo -e "$MSG_I Operating System: Linux"
-        linux_check_syncplay
+        linux_check_syncplay_installed
     elif [ "$(expr substr $(uname -s) 1 5)" == "MINGW" ]; then
         echo -e "$MSG_I Operating System: Windows"
         windows_check_syncplay
@@ -18,11 +18,21 @@ function check_os {
     fi
 }
 
-function linux_check_syncplay {
+function linux_check_syncplay_installed {
     if pacman -Qs syncplay >/dev/null 2>&1; then
-        echo -e "$MSG_S is installed"
+        echo -e "$MSG_S Syncplay is installed"
+        linux_check_syncplay_opened
     else
         echo "is not installed"
+    fi
+}
+
+function linux_check_syncplay_opened {
+    linux_path="$HOME/$linux_path"
+    if [ -f "$linux_path/syncplay.ini" ]; then
+        echo -e "$MSG_S Syncplay.ini exists"
+    else
+        echo -e "$MSG_F Syncplay.ini exists. Open Syncplay at least once and try again."
     fi
 }
 
